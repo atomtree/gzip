@@ -1,7 +1,7 @@
 package gzip
 
 import (
-	"github.com/go-martini/martini"
+	"github.com/Hellowor/martini"
 	"bufio"
 	"net"
 	"net/http"
