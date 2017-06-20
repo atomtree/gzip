@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"strings"
 
+	"log"
+	"time"
+
 	"github.com/atomtree/martini"
 )
 
@@ -53,18 +56,21 @@ type Options struct {
 func All(options ...Options) martini.Handler {
 	opt := prepareOptions(options)
 	return func(w http.ResponseWriter, r *http.Request, c martini.Context) {
+		start := time.Now()
 		serveGzip(w, r, c, opt)
+		log.Printf("martini-中间件-gzip-1 %s\n", time.Since(start).String())
+
 	}
 }
 
 func prepareOptions(options []Options) Options {
 	var opt Options
-        if len(options) > 0 {
-                opt = options[0]
-        }
-        if !isCompressionLevelValid(opt.CompressionLevel) {
-                opt.CompressionLevel = DefaultCompression
-        }
+	if len(options) > 0 {
+		opt = options[0]
+	}
+	if !isCompressionLevelValid(opt.CompressionLevel) {
+		opt.CompressionLevel = DefaultCompression
+	}
 	return opt
 }
 
